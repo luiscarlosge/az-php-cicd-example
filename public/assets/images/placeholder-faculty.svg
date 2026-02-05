@@ -1,0 +1,6 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f3f2f1"/>
+  <circle cx="200" cy="120" r="50" fill="#d2d0ce"/>
+  <path d="M 120 250 Q 200 200 280 250 L 280 300 L 120 300 Z" fill="#d2d0ce"/>
+  <text x="200" y="280" font-family="Arial" font-size="16" fill="#605e5c" text-anchor="middle">Faculty Photo</text>
+</svg>

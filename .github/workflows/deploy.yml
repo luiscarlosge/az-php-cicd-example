@@ -1,0 +1,93 @@
+name: Deploy to Azure
+
+# Trigger workflow on push to main branch and on pull requests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Required GitHub Secrets:
+# - AZURE_CREDENTIALS: Service principal credentials in JSON format
+#   {
+#     "clientId": "<client-id>",
+#     "clientSecret": "<client-secret>",
+#     "subscriptionId": "<subscription-id>",
+#     "tenantId": "<tenant-id>"
+#   }
+# - AZURE_APP_NAME: Name of the Azure App Service (e.g., "my-php-portal")
+#
+# To configure these secrets:
+# 1. Go to your GitHub repository
+# 2. Navigate to Settings > Secrets and variables > Actions
+# 3. Click "New repository secret"
+# 4. Add AZURE_CREDENTIALS with the service principal JSON
+# 5. Add AZURE_APP_NAME with your App Service name
+
+jobs:
+  # Validation job - runs on all branches
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Setup PHP 8.0 environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+      
+      # Validate PHP syntax for all PHP files
+      - name: Validate PHP syntax
+        run: find public includes -name "*.php" -exec php -l {} \;
+      
+      # Run PHPUnit tests if they exist
+      - name: Run PHPUnit tests
+        run: |
+          if [ -f "vendor/bin/phpunit" ]; then
+            vendor/bin/phpunit tests/unit
+          else
+            echo "PHPUnit not installed, skipping tests"
+          fi
+  
+  # Deployment job - only runs on main branch after validation succeeds
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Login to Azure using service principal credentials
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      # Deploy application to Azure App Service
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_APP_NAME }}
+          package: .
+      
+      # Verify deployment with HTTP health check
+      - name: Verify deployment
+        run: |
+          echo "Waiting for deployment to complete..."
+          sleep 30
+          APP_URL="https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net"
+          echo "Checking application at: $APP_URL"
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL")
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 301 ] || [ "$HTTP_STATUS" -eq 302 ]; then
+            echo "Deployment successful! Application is accessible (HTTP $HTTP_STATUS)"
+          else
+            echo "Deployment verification failed! HTTP status: $HTTP_STATUS"
+            exit 1
+          fi
