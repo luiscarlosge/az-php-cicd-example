@@ -1,11 +1,17 @@
-# Remote state storage configuration (optional)
-# Uncomment and configure the backend block below to use Azure Storage for remote state
+# Remote state storage configuration
+# Backend configuration for Azure Storage
+# Values are provided via environment variables or command-line flags
 
-# terraform {
-#   backend "azurerm" {
-#     resource_group_name  = "terraform-state-rg"
-#     storage_account_name = "tfstateaccount"
-#     container_name       = "tfstate"
-#     key                  = "azure-php-cicd-portal.tfstate"
-#   }
-# }
+terraform {
+  backend "azurerm" {
+    # These values will be provided via:
+    # - GitHub Actions: environment variables
+    # - Local: terraform init -backend-config flags
+    # 
+    # Required values:
+    # - resource_group_name
+    # - storage_account_name
+    # - container_name
+    # - key
+  }
+}
