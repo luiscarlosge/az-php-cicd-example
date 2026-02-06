@@ -1,0 +1,11 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="300" fill="#f3f2f1"/>
+  
+  <!-- Person icon -->
+  <circle cx="150" cy="100" r="45" fill="#d2d0ce"/>
+  <path d="M 75 250 Q 150 190 225 250 L 225 300 L 75 300 Z" fill="#d2d0ce"/>
+  
+  <!-- Text label -->
+  <text x="150" y="280" font-family="Arial, sans-serif" font-size="14" fill="#605e5c" text-anchor="middle">Faculty Photo</text>
+</svg>

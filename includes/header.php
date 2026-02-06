@@ -16,6 +16,7 @@ require_once __DIR__ . '/config.php';
     <title><?php echo isset($page_title) ? $page_title . ' - ' . SITE_NAME : SITE_NAME; ?></title>
     <link rel="stylesheet" href="/public/assets/css/style.css">
     <script src="/public/assets/js/main.js" defer></script>
+    <script src="/public/assets/js/language-switcher.js" defer></script>
 </head>
 <body>
     <header>
@@ -23,6 +24,20 @@ require_once __DIR__ . '/config.php';
             <div class="logo-section">
                 <img src="/public/assets/images/logo.svg" alt="<?php echo SITE_NAME; ?> Logo" class="site-logo" onerror="this.style.display='none'">
                 <h1 class="site-title"><?php echo SITE_NAME; ?></h1>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn <?php echo getCurrentLanguage() === 'es' ? 'active' : ''; ?>" 
+                        data-lang="es" 
+                        aria-label="Switch to Spanish"
+                        <?php echo getCurrentLanguage() === 'es' ? 'aria-current="true"' : ''; ?>>
+                    ES
+                </button>
+                <button class="lang-btn <?php echo getCurrentLanguage() === 'en' ? 'active' : ''; ?>" 
+                        data-lang="en" 
+                        aria-label="Switch to English"
+                        <?php echo getCurrentLanguage() === 'en' ? 'aria-current="true"' : ''; ?>>
+                    EN
+                </button>
             </div>
         </div>
     </header>

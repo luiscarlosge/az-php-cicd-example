@@ -12,7 +12,6 @@ $nav_items = [
     '/public/index.php' => 'Home',
     '/public/curriculum.php' => 'Curriculum',
     '/public/faculty.php' => 'Faculty',
-    '/public/admissions.php' => 'Admissions',
     '/public/contact.php' => 'Contact'
 ];
 ?>
