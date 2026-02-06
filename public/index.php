@@ -18,30 +18,26 @@ require_once __DIR__ . '/../includes/navigation.php';
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Welcome to <?php echo SITE_NAME; ?></h1>
-            <p class="hero-subtitle">Transform Your Career with Advanced Cloud Computing Skills</p>
+            <h1><?php echo t('site.welcome'); ?> <?php echo t('site.name'); ?></h1>
+            <p class="hero-subtitle"><?php echo t('site.hero_subtitle'); ?></p>
         </div>
     </section>
 
     <!-- Course Overview Section -->
     <section class="course-overview">
         <div class="container">
-            <h2>Course Overview</h2>
+            <h2><?php echo t('course.overview'); ?></h2>
             <article class="course-details">
-                <p>Our comprehensive Post Graduate Course in Cloud Computing is designed to equip you with the knowledge and skills needed to excel in the rapidly evolving cloud technology landscape. This program combines theoretical foundations with hands-on practical experience across major cloud platforms.</p>
+                <p><?php echo t('course.overview_text'); ?></p>
                 
                 <div class="course-info-grid">
                     <div class="info-card">
-                        <h3>Duration</h3>
-                        <p><?php echo COURSE_DURATION; ?></p>
+                        <h3><?php echo t('course.duration_label'); ?></h3>
+                        <p><?php echo t('course.duration'); ?></p>
                     </div>
                     <div class="info-card">
-                        <h3>Start Date</h3>
-                        <p><?php echo COURSE_START_DATE; ?></p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Mode</h3>
-                        <p><?php echo COURSE_MODE; ?></p>
+                        <h3><?php echo t('course.mode_label'); ?></h3>
+                        <p><?php echo t('course.mode'); ?></p>
                     </div>
                 </div>
             </article>
@@ -51,31 +47,31 @@ require_once __DIR__ . '/../includes/navigation.php';
     <!-- Key Highlights Section -->
     <section class="highlights">
         <div class="container">
-            <h2>Key Highlights</h2>
+            <h2><?php echo t('highlights.title'); ?></h2>
             <div class="highlights-grid">
                 <article class="highlight-card">
-                    <h3>Industry-Relevant Curriculum</h3>
-                    <p>Learn from a curriculum designed in collaboration with industry experts, covering AWS, Azure, and Google Cloud Platform.</p>
+                    <h3><?php echo t('highlights.industry_curriculum'); ?></h3>
+                    <p><?php echo t('highlights.industry_curriculum_desc'); ?></p>
                 </article>
                 <article class="highlight-card">
-                    <h3>Hands-On Projects</h3>
-                    <p>Apply your knowledge through real-world projects and a comprehensive capstone project.</p>
+                    <h3><?php echo t('highlights.hands_on_projects'); ?></h3>
+                    <p><?php echo t('highlights.hands_on_projects_desc'); ?></p>
                 </article>
                 <article class="highlight-card">
-                    <h3>Expert Faculty</h3>
-                    <p>Learn from experienced professors and industry practitioners with extensive cloud computing expertise.</p>
+                    <h3><?php echo t('highlights.expert_faculty'); ?></h3>
+                    <p><?php echo t('highlights.expert_faculty_desc'); ?></p>
                 </article>
                 <article class="highlight-card">
-                    <h3>Career Support</h3>
-                    <p>Benefit from career guidance, industry connections, and placement assistance throughout your journey.</p>
+                    <h3><?php echo t('highlights.career_support'); ?></h3>
+                    <p><?php echo t('highlights.career_support_desc'); ?></p>
                 </article>
                 <article class="highlight-card">
-                    <h3>Flexible Learning</h3>
-                    <p>Choose between full-time and part-time options to fit your schedule and career goals.</p>
+                    <h3><?php echo t('highlights.flexible_learning'); ?></h3>
+                    <p><?php echo t('highlights.flexible_learning_desc'); ?></p>
                 </article>
                 <article class="highlight-card">
-                    <h3>Industry Certifications</h3>
-                    <p>Prepare for major cloud certifications including AWS, Azure, and Google Cloud credentials.</p>
+                    <h3><?php echo t('highlights.industry_certifications'); ?></h3>
+                    <p><?php echo t('highlights.industry_certifications_desc'); ?></p>
                 </article>
             </div>
         </div>
@@ -84,11 +80,10 @@ require_once __DIR__ . '/../includes/navigation.php';
     <!-- Call to Action Section -->
     <section class="cta">
         <div class="container">
-            <h2>Ready to Start Your Cloud Computing Journey?</h2>
-            <p>Join our next cohort and become a cloud computing expert. Applications are now open!</p>
+            <h2><?php echo t('cta.title'); ?></h2>
+            <p><?php echo t('cta.description'); ?></p>
             <div class="cta-buttons">
-                <a href="/public/admissions.php" class="btn btn-primary">Apply Now</a>
-                <a href="/public/curriculum.php" class="btn btn-secondary">View Curriculum</a>
+                <a href="/public/curriculum.php" class="btn btn-primary"><?php echo t('cta.view_curriculum'); ?></a>
             </div>
         </div>
     </section>

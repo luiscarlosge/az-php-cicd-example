@@ -2,7 +2,19 @@
 /**
  * Configuration File
  * Contains site constants, course information, curriculum modules, and faculty data
+ * Initializes language management system
  */
+
+// Start session for language persistence
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include language management system
+require_once __DIR__ . '/language.php';
+
+// Initialize language system on every page load
+initLanguage();
 
 // Site Configuration
 define('SITE_NAME', 'Post Graduate Course in Cloud Computing');

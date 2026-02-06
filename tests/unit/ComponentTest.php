@@ -51,7 +51,7 @@ class ComponentTest extends TestCase
         
         // Verify CSS stylesheet link
         $this->assertStringContainsString('<link rel="stylesheet"', $output);
-        $this->assertStringContainsString('href="assets/css/style.css"', $output);
+        $this->assertStringContainsString('href="/public/assets/css/style.css"', $output);
         
         // Verify header element
         $this->assertStringContainsString('<header>', $output);
@@ -60,7 +60,60 @@ class ComponentTest extends TestCase
         $this->assertStringContainsString('Post Graduate Course in Cloud Computing', $output);
         
         // Verify logo image
-        $this->assertStringContainsString('assets/images/logo.svg', $output);
+        $this->assertStringContainsString('/public/assets/images/logo.svg', $output);
+    }
+
+    /**
+     * Test header includes language switcher component
+     * Requirements: 2.4
+     */
+    public function testHeaderIncludesLanguageSwitcher(): void
+    {
+        $headerPath = $this->includesDir . '/header.php';
+        $this->assertFileExists($headerPath, 'Header component file should exist');
+
+        $output = $this->renderComponent($headerPath);
+
+        // Verify language switcher container is present
+        $this->assertStringContainsString('class="language-switcher"', $output);
+        
+        // Verify ES button is present
+        $this->assertStringContainsString('data-lang="es"', $output);
+        $this->assertMatchesRegularExpression('/ES\s*<\/button>/', $output, 'ES button should be present');
+        
+        // Verify EN button is present
+        $this->assertStringContainsString('data-lang="en"', $output);
+        $this->assertMatchesRegularExpression('/EN\s*<\/button>/', $output, 'EN button should be present');
+        
+        // Verify lang-btn class is present
+        $this->assertStringContainsString('class="lang-btn', $output);
+        
+        // Verify aria labels for accessibility
+        $this->assertStringContainsString('aria-label="Switch to Spanish"', $output);
+        $this->assertStringContainsString('aria-label="Switch to English"', $output);
+    }
+
+    /**
+     * Test language switcher shows active state for current language
+     * Requirements: 2.4
+     */
+    public function testLanguageSwitcherShowsActiveState(): void
+    {
+        $headerPath = $this->includesDir . '/header.php';
+        
+        // Test with Spanish as current language
+        $_SESSION['language'] = 'es';
+        $output = $this->renderComponent($headerPath);
+        
+        // Verify ES button has active class (class comes before data-lang in the HTML)
+        $this->assertMatchesRegularExpression('/class="lang-btn[^"]*active[^"]*"[^>]*data-lang="es"/', $output, 'ES button should have active class when Spanish is selected');
+        
+        // Test with English as current language
+        $_SESSION['language'] = 'en';
+        $output = $this->renderComponent($headerPath);
+        
+        // Verify EN button has active class
+        $this->assertMatchesRegularExpression('/class="lang-btn[^"]*active[^"]*"[^>]*data-lang="en"/', $output, 'EN button should have active class when English is selected');
     }
 
     /**
