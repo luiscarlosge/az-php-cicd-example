@@ -28,3 +28,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Deployment packages
+*.zip
+
+# Temporary deployment files
+temp-deploy/
