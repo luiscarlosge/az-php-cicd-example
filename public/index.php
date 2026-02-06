@@ -87,8 +87,8 @@ require_once __DIR__ . '/../includes/navigation.php';
             <h2>Ready to Start Your Cloud Computing Journey?</h2>
             <p>Join our next cohort and become a cloud computing expert. Applications are now open!</p>
             <div class="cta-buttons">
-                <a href="admissions.php" class="btn btn-primary">Apply Now</a>
-                <a href="curriculum.php" class="btn btn-secondary">View Curriculum</a>
+                <a href="/public/admissions.php" class="btn btn-primary">Apply Now</a>
+                <a href="/public/curriculum.php" class="btn btn-secondary">View Curriculum</a>
             </div>
         </div>
     </section>

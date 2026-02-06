@@ -89,6 +89,25 @@ vendor/bin/phpunit --coverage-html coverage
 
 Follow these steps to deploy the portal to Azure:
 
+### Quick Linux Deployment
+
+For Azure Linux App Service, use the pre-configured deployment package:
+
+```bash
+# Create the deployment package
+powershell -ExecutionPolicy Bypass -File create-linux-zip.ps1
+
+# Deploy to Azure
+az webapp deployment source config-zip \
+  --resource-group rg-cloud-course-portal \
+  --name YOUR-APP-NAME \
+  --src azure-deploy-linux.zip
+```
+
+📖 **[Linux Deployment Quick Start](docs/linux-deployment-quickstart.md)** - Fast deployment guide  
+📖 **[Linux Deployment Instructions](docs/deploy-instructions.md)** - Detailed Linux setup  
+📖 **[Complete Deployment Guide](docs/deployment-guide.md)** - Full walkthrough
+
 ### 1. Set Up Azure Account
 
 Create a free Azure account and subscription:
@@ -198,6 +217,10 @@ azure-php-cicd-portal/
 │   ├── github-setup.md        # GitHub configuration
 │   ├── atlantis-setup.md      # Atlantis setup (optional)
 │   ├── local-development.md   # Local dev environment
+│   ├── deployment-guide.md    # Complete deployment walkthrough
+│   ├── deploy-instructions.md # Quick Linux deployment guide
+│   ├── deploy-linux.md        # Detailed Linux deployment
+│   ├── linux-deployment-quickstart.md # Linux quick start
 │   ├── architecture.md        # System architecture
 │   ├── troubleshooting.md     # Common issues
 │   └── logging.md             # Logging and monitoring

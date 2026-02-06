@@ -9,11 +9,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 // Define navigation menu items
 $nav_items = [
-    'index.php' => 'Home',
-    'curriculum.php' => 'Curriculum',
-    'faculty.php' => 'Faculty',
-    'admissions.php' => 'Admissions',
-    'contact.php' => 'Contact'
+    '/public/index.php' => 'Home',
+    '/public/curriculum.php' => 'Curriculum',
+    '/public/faculty.php' => 'Faculty',
+    '/public/admissions.php' => 'Admissions',
+    '/public/contact.php' => 'Contact'
 ];
 ?>
 <nav class="main-navigation">

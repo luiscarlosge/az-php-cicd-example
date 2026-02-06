@@ -14,14 +14,14 @@ require_once __DIR__ . '/config.php';
     <meta name="keywords" content="cloud computing, post graduate, AWS, Azure, GCP, DevOps, CI/CD">
     <meta name="author" content="<?php echo SITE_NAME; ?>">
     <title><?php echo isset($page_title) ? $page_title . ' - ' . SITE_NAME : SITE_NAME; ?></title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="/public/assets/css/style.css">
+    <script src="/public/assets/js/main.js" defer></script>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <img src="assets/images/logo.svg" alt="<?php echo SITE_NAME; ?> Logo" class="site-logo" onerror="this.style.display='none'">
+                <img src="/public/assets/images/logo.svg" alt="<?php echo SITE_NAME; ?> Logo" class="site-logo" onerror="this.style.display='none'">
                 <h1 class="site-title"><?php echo SITE_NAME; ?></h1>
             </div>
         </div>

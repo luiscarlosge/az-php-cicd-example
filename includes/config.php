@@ -91,27 +91,27 @@ $faculty = [
         'title' => 'Professor of Cloud Computing',
         'credentials' => 'PhD in Computer Science, AWS Certified Solutions Architect',
         'specialization' => 'Cloud Architecture and Distributed Systems',
-        'image' => 'assets/images/faculty/jane-smith.jpg'
+        'image' => '/public/assets/images/faculty/jane-smith.jpg'
     ],
     [
         'name' => 'Prof. John Doe',
         'title' => 'Associate Professor',
         'credentials' => 'MS in Software Engineering, Azure Solutions Architect Expert',
         'specialization' => 'DevOps and Infrastructure Automation',
-        'image' => 'assets/images/faculty/john-doe.jpg'
+        'image' => '/public/assets/images/faculty/john-doe.jpg'
     ],
     [
         'name' => 'Dr. Sarah Johnson',
         'title' => 'Assistant Professor',
         'credentials' => 'PhD in Information Security, CISSP, Google Cloud Certified',
         'specialization' => 'Cloud Security and Compliance',
-        'image' => 'assets/images/faculty/sarah-johnson.jpg'
+        'image' => '/public/assets/images/faculty/sarah-johnson.jpg'
     ],
     [
         'name' => 'Prof. Michael Chen',
         'title' => 'Senior Lecturer',
         'credentials' => 'MS in Cloud Computing, Kubernetes Certified Administrator',
         'specialization' => 'Container Orchestration and Microservices',
-        'image' => 'assets/images/faculty/michael-chen.jpg'
+        'image' => '/public/assets/images/faculty/michael-chen.jpg'
     ]
 ];

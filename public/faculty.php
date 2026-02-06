@@ -38,7 +38,7 @@ require_once __DIR__ . '/../includes/navigation.php';
                         <div class="faculty-image">
                             <img src="<?php echo htmlspecialchars($member['image']); ?>" 
                                  alt="Photo of <?php echo htmlspecialchars($member['name']); ?>" 
-                                 onerror="this.src='assets/images/placeholder-faculty.svg'">
+                                 onerror="this.src='/public/assets/images/placeholder-faculty.svg'">
                         </div>
                         <div class="faculty-info">
                             <h3><?php echo htmlspecialchars($member['name']); ?></h3>

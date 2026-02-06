@@ -1,0 +1,12 @@
+[config]
+# Azure deployment configuration
+# Specifies the deployment script and project path
+
+# Use custom deployment script if needed
+# SCM_DO_BUILD_DURING_DEPLOYMENT = true
+
+# Project path (root of the application)
+project = .
+
+# Build command (if using composer)
+# command = composer install --no-dev --optimize-autoloader
