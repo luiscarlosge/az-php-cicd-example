@@ -273,23 +273,23 @@ Lock Info:
 
 3. **Verify no operations are running** before force unlocking:
    - Check GitHub Actions for running workflows
-   - Check Atlantis for active operations
    - Check if anyone else is running Terraform
 
-#### Concurrent Atlantis Operations
+#### Concurrent Terraform Operations
 
 **Error:**
 ```
-Error: Another command is already running for this repo/pull
+Error: Another Terraform operation is already running
 ```
 
 **Solution:**
 
 1. Wait for the current operation to complete
-2. Check Atlantis logs to see what's running
-3. If stuck, unlock via Atlantis comment:
-   ```
-   atlantis unlock
+2. Check GitHub Actions logs to see what's running
+3. If stuck, force unlock (use with caution):
+   ```bash
+   cd terraform
+   terraform force-unlock <LOCK_ID>
    ```
 
 #### Remote State Backend Issues
@@ -309,7 +309,7 @@ Error: Failed to get existing workspaces: storage: service returned error
 ### Preventing State Lock Issues
 
 1. **Avoid concurrent operations** - coordinate with team members
-2. **Use Atlantis** - it manages locks automatically
+2. **Use GitHub Actions** - workflows prevent concurrent runs automatically
 3. **Set up proper CI/CD** - ensure only one deployment runs at a time
 4. **Use remote state** - local state files can't be locked across machines
 

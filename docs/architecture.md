@@ -31,7 +31,7 @@ The Azure PHP CI/CD Portal is a static web application built with PHP that showc
 - **Backend**: PHP 8.0+
 - **Hosting**: Azure App Service (Linux, F1 tier)
 - **CI/CD**: GitHub Actions
-- **Infrastructure**: Terraform, Atlantis (optional)
+- **Infrastructure**: Terraform
 - **Version Control**: Git, GitHub
 - **Testing**: PHPUnit
 
@@ -57,9 +57,9 @@ The Azure PHP CI/CD Portal is a static web application built with PHP that showc
                 │                 │                 │
                 │                 │                 │
         ┌───────▼────────┐  ┌────▼─────┐  ┌───────▼────────┐
-        │  Validation    │  │ Atlantis │  │  Deployment    │
-        │  (PHP Lint,    │  │(Terraform│  │  (Azure CLI,   │
-        │   PHPUnit)     │  │  PR Auto)│  │   App Deploy)  │
+        │  Validation    │  │ Terraform│  │  Deployment    │
+        │  (PHP Lint,    │  │ Workflow │  │  (Azure CLI,   │
+        │   PHPUnit)     │  │  (Infra) │  │   App Deploy)  │
         └───────┬────────┘  └────┬─────┘  └───────┬────────┘
                 │                │                 │
                 │         ┌──────▼──────┐          │
@@ -175,14 +175,6 @@ The Azure PHP CI/CD Portal is a static web application built with PHP that showc
 - **Variables**: Configurable parameters (region, names)
 - **Outputs**: App Service URL, resource names
 - **State**: Stored locally or in Azure Storage (remote backend)
-
-#### Atlantis (Optional)
-- **Purpose**: Automates Terraform workflows via pull requests
-- **Workflow**:
-  1. PR with Terraform changes triggers `terraform plan`
-  2. Plan results posted as PR comment
-  3. After approval, `atlantis apply` executes changes
-- **Configuration**: `atlantis.yaml` defines project settings
 
 ### 5. Version Control Layer
 
@@ -391,27 +383,16 @@ graph TD
 graph TD
     A[Developer: Modify Terraform] --> B[Create Pull Request]
     
-    B --> C{Atlantis Enabled?}
+    B --> C[GitHub Actions: terraform plan]
+    C --> D[Review Plan in Workflow Logs]
+    D --> E{Approved?}
+    E -->|No| F[Request Changes]
+    E -->|Yes| G[Merge PR]
+    G --> H[GitHub Actions: terraform apply]
     
-    C -->|Yes| D[Atlantis: terraform plan]
-    D --> E[Post Plan as PR Comment]
-    E --> F[Team Review Plan]
-    F --> G{Approved?}
-    G -->|No| H[Request Changes]
-    G -->|Yes| I[Comment: atlantis apply]
-    I --> J[Atlantis: terraform apply]
+    H --> I[Azure Resources Updated]
     
-    C -->|No| K[Manual: terraform plan]
-    K --> L[Review Plan Locally]
-    L --> M{Looks Good?}
-    M -->|No| N[Modify Terraform]
-    M -->|Yes| O[Merge PR]
-    O --> P[Manual: terraform apply]
-    
-    J --> Q[Azure Resources Updated]
-    P --> Q
-    
-    Q --> R[Verify in Azure Portal]
+    I --> J[Verify in Azure Portal]
 ```
 
 ### Terraform State Management

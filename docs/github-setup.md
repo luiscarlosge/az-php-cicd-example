@@ -427,12 +427,9 @@ After setting up GitHub:
 1. **Deploy Infrastructure**: Use Terraform to create Azure resources
    - See the main README for Terraform deployment instructions
 
-2. **Configure Atlantis** (optional): Automate Terraform workflows
-   - Follow the [Atlantis Setup Guide](./atlantis-setup.md)
+2. **Test End-to-End**: Make a code change and verify it deploys automatically
 
-3. **Test End-to-End**: Make a code change and verify it deploys automatically
-
-4. **Set Up Monitoring**: Configure Azure Application Insights (optional)
+3. **Set Up Monitoring**: Configure Azure Application Insights (optional)
 
 ## Additional Resources
 

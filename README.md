@@ -12,7 +12,6 @@ This project demonstrates a complete DevOps workflow for deploying a PHP web app
 - **Azure App Service (Free Tier)** for hosting
 - **Terraform** for Infrastructure as Code
 - **GitHub Actions** for CI/CD automation
-- **Atlantis** (optional) for Terraform workflow automation
 - **PHPUnit** for testing
 
 ## Features
@@ -215,12 +214,12 @@ azure-php-cicd-portal/
 │   ├── azure-setup.md         # Azure account setup
 │   ├── service-principal.md   # Service principal creation
 │   ├── github-setup.md        # GitHub configuration
-│   ├── atlantis-setup.md      # Atlantis setup (optional)
 │   ├── local-development.md   # Local dev environment
 │   ├── deployment-guide.md    # Complete deployment walkthrough
 │   ├── deploy-instructions.md # Quick Linux deployment guide
 │   ├── deploy-linux.md        # Detailed Linux deployment
 │   ├── linux-deployment-quickstart.md # Linux quick start
+│   ├── terraform-backend-setup.md # Terraform backend configuration
 │   ├── architecture.md        # System architecture
 │   ├── troubleshooting.md     # Common issues
 │   └── logging.md             # Logging and monitoring
@@ -231,7 +230,6 @@ azure-php-cicd-portal/
 │       └── tasks.md           # Implementation tasks
 ├── composer.json              # PHP dependencies
 ├── phpunit.xml                # PHPUnit configuration
-├── atlantis.yaml              # Atlantis configuration
 ├── .gitignore                 # Git ignore rules
 └── README.md                  # This file
 ```
@@ -257,7 +255,6 @@ azure-php-cicd-portal/
 - **GitHub**: Repository hosting
 - **GitHub Actions**: CI/CD automation
 - **Terraform**: Infrastructure as Code
-- **Atlantis**: Terraform PR automation (optional)
 
 ### Testing
 - **PHPUnit**: Unit testing framework
@@ -416,7 +413,6 @@ This project was made possible by:
 - **Microsoft Azure** for providing free tier hosting
 - **GitHub** for free repository hosting and Actions
 - **HashiCorp** for Terraform
-- **Runatlantis** for Atlantis automation
 - **PHPUnit** for testing framework
 - The open-source community for inspiration and tools
 
@@ -428,7 +424,6 @@ Want to learn more about the technologies used?
 - [GitHub Actions Documentation](https://docs.github.com/actions)
 - [Terraform Documentation](https://www.terraform.io/docs)
 - [PHP Documentation](https://www.php.net/docs.php)
-- [Atlantis Documentation](https://www.runatlantis.io/docs/)
 
 ## Project Status
 
