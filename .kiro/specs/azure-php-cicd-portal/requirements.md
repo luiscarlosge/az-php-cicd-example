@@ -2,14 +2,13 @@
 
 ## Introduction
 
-This document specifies the requirements for a PHP-based static portal that showcases a Post Graduate Course in Cloud Computing. The portal will be deployed on Azure App Service using the free tier, with CI/CD automation through GitHub Actions and infrastructure management via Atlantis/Terraform.
+This document specifies the requirements for a PHP-based static portal that showcases a Post Graduate Course in Cloud Computing. The portal will be deployed on Azure App Service using the free tier, with CI/CD automation through GitHub Actions and infrastructure management via Terraform.
 
 ## Glossary
 
 - **Portal**: The PHP web application serving course information
 - **Azure_App_Service**: Microsoft Azure's platform-as-a-service for hosting web applications
 - **GitHub_Actions**: GitHub's CI/CD automation platform
-- **Atlantis**: Terraform pull request automation tool
 - **Free_Tier**: Azure App Service's F1 pricing tier with no cost
 - **GitHub_Free_Account**: GitHub's free tier with public repositories and limited Actions minutes
 - **CI/CD_Pipeline**: Continuous Integration and Continuous Deployment automated workflow
@@ -92,22 +91,7 @@ This document specifies the requirements for a PHP-based static portal that show
 11. WHEN deployment succeeds, THE CI/CD_Pipeline SHALL report success status
 12. WHEN deployment fails, THE CI/CD_Pipeline SHALL report failure with error details
 
-### Requirement 6: Atlantis Configuration for Terraform Automation
-
-**User Story:** As a DevOps engineer, I want Atlantis to automate Terraform workflows through pull requests on a free GitHub account, so that infrastructure changes are reviewed and applied safely.
-
-#### Acceptance Criteria
-
-1. THE Atlantis SHALL be configured to monitor the public GitHub repository for pull requests
-2. WHEN a pull request modifies Terraform files, THE Atlantis SHALL automatically run 'terraform plan'
-3. WHEN a pull request is approved and merged, THE Atlantis SHALL run 'terraform apply' automatically or on command
-4. THE Atlantis SHALL post plan results as pull request comments for review
-5. THE Atlantis SHALL authenticate with Azure using service principal credentials
-6. THE Atlantis SHALL use a configuration file (atlantis.yaml) defining project settings
-7. THE Atlantis SHALL prevent concurrent Terraform operations on the same workspace
-8. THE Documentation SHALL include options for running Atlantis locally or using free cloud alternatives
-
-### Requirement 7: Documentation and Setup Instructions
+### Requirement 6: Documentation and Setup Instructions
 
 **User Story:** As a new team member, I want comprehensive setup documentation, so that I can configure and deploy the portal independently.
 
@@ -116,13 +100,12 @@ This document specifies the requirements for a PHP-based static portal that show
 1. THE Documentation SHALL include step-by-step instructions for Azure free tier account setup
 2. THE Documentation SHALL include instructions for creating an Azure service principal for authentication
 3. THE Documentation SHALL include instructions for configuring GitHub repository secrets
-4. THE Documentation SHALL include instructions for setting up Atlantis (self-hosted or cloud)
-5. THE Documentation SHALL include instructions for local development environment setup
-6. THE Documentation SHALL include a troubleshooting section for common deployment issues
-7. THE Documentation SHALL include architecture diagrams showing the CI/CD workflow
-8. WHEN following the documentation, THE User SHALL be able to deploy the portal from scratch within 2 hours
+4. THE Documentation SHALL include instructions for local development environment setup
+5. THE Documentation SHALL include a troubleshooting section for common deployment issues
+6. THE Documentation SHALL include architecture diagrams showing the CI/CD workflow
+7. WHEN following the documentation, THE User SHALL be able to deploy the portal from scratch within 2 hours
 
-### Requirement 8: Deployment Workflow and Validation
+### Requirement 7: Deployment Workflow and Validation
 
 **User Story:** As a quality assurance engineer, I want automated validation before deployment, so that broken code doesn't reach production.
 
@@ -135,7 +118,7 @@ This document specifies the requirements for a PHP-based static portal that show
 5. THE CI/CD_Pipeline SHALL include a manual approval step for production deployments (optional)
 6. WHEN deployment completes, THE CI/CD_Pipeline SHALL verify the application is accessible via HTTP health check
 
-### Requirement 9: Security and Access Control
+### Requirement 8: Security and Access Control
 
 **User Story:** As a security administrator, I want secure credential management and access control, so that sensitive information is protected.
 
@@ -143,12 +126,11 @@ This document specifies the requirements for a PHP-based static portal that show
 
 1. THE Portal SHALL NOT expose sensitive credentials in source code or configuration files
 2. THE GitHub_Actions SHALL use GitHub Secrets for storing Azure credentials
-3. THE Atlantis SHALL use environment variables or secure secret management for Azure credentials
-4. THE Azure_App_Service SHALL use HTTPS for all connections (free tier supports HTTPS on azurewebsites.net domain)
-5. WHEN accessing Azure resources, THE CI/CD_Pipeline SHALL use service principal authentication with minimal required permissions
-6. THE Terraform state SHALL be stored remotely in Azure Storage with encryption (optional but recommended)
+3. THE Azure_App_Service SHALL use HTTPS for all connections (free tier supports HTTPS on azurewebsites.net domain)
+4. WHEN accessing Azure resources, THE CI/CD_Pipeline SHALL use service principal authentication with minimal required permissions
+5. THE Terraform state SHALL be stored remotely in Azure Storage with encryption (optional but recommended)
 
-### Requirement 10: Monitoring and Logging
+### Requirement 9: Monitoring and Logging
 
 **User Story:** As a system administrator, I want basic monitoring and logging, so that I can troubleshoot issues and track application health.
 

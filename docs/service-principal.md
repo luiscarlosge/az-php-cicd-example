@@ -1,14 +1,13 @@
 # Azure Service Principal Setup Guide
 
-This guide explains how to create an Azure Service Principal for authenticating GitHub Actions and Atlantis with your Azure subscription.
+This guide explains how to create an Azure Service Principal for authenticating GitHub Actions with your Azure subscription.
 
 ## What is a Service Principal?
 
 A Service Principal is an identity created for use with applications, services, and automation tools to access Azure resources. Think of it as a "service account" that allows automated tools to authenticate with Azure without using your personal credentials.
 
 For this project, the Service Principal will be used by:
-- **GitHub Actions**: To deploy the PHP application to Azure App Service
-- **Atlantis** (optional): To manage infrastructure with Terraform
+- **GitHub Actions**: To deploy the PHP application to Azure App Service and manage infrastructure with Terraform
 
 ## Prerequisites
 
@@ -253,7 +252,7 @@ If you need to delete the service principal (e.g., to create a new one):
 az ad sp delete --id <clientId>
 ```
 
-**Warning**: Deleting the service principal will break any automation using it (GitHub Actions, Atlantis).
+**Warning**: Deleting the service principal will break any automation using it (GitHub Actions).
 
 ## Rotating Credentials (Security Best Practice)
 
@@ -353,7 +352,7 @@ az role assignment create \
 
 5. **Use separate service principals**:
    - Use different service principals for different environments (dev, staging, prod)
-   - Use different service principals for different tools (GitHub Actions, Atlantis)
+   - Use different service principals for different purposes if needed
 
 6. **Enable MFA for your personal account**:
    - Even though the service principal doesn't use MFA, your personal account should
@@ -365,7 +364,6 @@ After creating the service principal:
 
 1. **Configure GitHub Secrets**: Follow the [GitHub Setup Guide](./github-setup.md)
 2. **Test the CI/CD Pipeline**: Push code to trigger a deployment
-3. **Configure Atlantis** (optional): Follow the [Atlantis Setup Guide](./atlantis-setup.md)
 
 ## Additional Resources
 

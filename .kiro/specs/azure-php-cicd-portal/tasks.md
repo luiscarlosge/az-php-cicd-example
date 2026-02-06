@@ -202,24 +202,7 @@ Each task builds incrementally on previous work, ensuring that core functionalit
   - Test workflow references required secrets (AZURE_CREDENTIALS, AZURE_APP_NAME)
   - _Requirements: 5.3, 5.4, 5.5, 5.6, 5.9_
 
-- [x] 8. Create Atlantis configuration
-  - [x] 8.1 Create Atlantis configuration file
-    - Create `atlantis.yaml` with version: 3
-    - Define project with name: azure-infrastructure, dir: terraform, workspace: default
-    - Set terraform_version to v1.5.0 or appropriate version
-    - Configure autoplan to trigger when *.tf or *.tfvars files are modified
-    - Set apply_requirements to ["approved", "mergeable"]
-    - _Requirements: 6.1, 6.2, 6.3, 6.6_
-  
-  - [x] 8.2 Document Atlantis setup options
-    - Add section to documentation for self-hosted Atlantis setup
-    - Include instructions for running Atlantis locally with ngrok for testing
-    - Include instructions for configuring GitHub webhook
-    - Document alternative: using GitHub Actions with Terraform instead of Atlantis
-    - Document Atlantis authentication with Azure (service principal environment variables)
-    - _Requirements: 6.5, 6.8_
-
-- [x] 9. Implement PHP unit tests
+- [x] 8. Implement PHP unit tests
   - [x] 9.1 Write tests for page rendering
 
     - Create `tests/unit/PageRenderTest.php` using PHPUnit
@@ -281,10 +264,10 @@ Each task builds incrementally on previous work, ensuring that core functionalit
   - [ ]* 10.5 Write property test for required documentation sections
     - **Property 5: Required Documentation Sections Present**
     - Generate test cases for all required documentation sections
-    - Required sections: Azure setup, service principal creation, GitHub secrets, Atlantis setup, local development, troubleshooting, architecture diagrams, log access (Portal), log access (CLI)
+    - Required sections: Azure setup, service principal creation, GitHub secrets, local development, troubleshooting, architecture diagrams, log access (Portal), log access (CLI)
     - For each section, verify documentation file contains section heading and content
-    - Run test with all required sections (9 iterations minimum)
-    - **Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 10.4, 10.5**
+    - Run test with all required sections (8 iterations minimum)
+    - **Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 8.4, 8.5**
 
 - [x] 11. Checkpoint - Run all tests locally
   - Run PHP unit tests: `vendor/bin/phpunit tests/unit`
@@ -318,18 +301,9 @@ Each task builds incrementally on previous work, ensuring that core functionalit
     - Document adding GitHub Secrets (AZURE_CREDENTIALS, AZURE_APP_NAME)
     - Document configuring repository settings for Actions
     - Include screenshots of GitHub Secrets configuration
-    - _Requirements: 5.2, 7.3_
+    - _Requirements: 5.2, 6.3_
   
-  - [x] 12.4 Create Atlantis setup documentation
-    - Create `docs/atlantis-setup.md` with Atlantis installation and configuration
-    - Document self-hosted Atlantis setup (Docker or binary)
-    - Document configuring GitHub webhook for Atlantis
-    - Document using ngrok for local testing
-    - Document alternative: GitHub Actions with Terraform
-    - Document Atlantis commands (atlantis plan, atlantis apply)
-    - _Requirements: 7.4_
-  
-  - [x] 12.5 Create local development documentation
+  - [x] 12.4 Create local development documentation
     - Create `docs/local-development.md` with development environment setup
     - Document installing PHP 8.0+ (Windows, macOS, Linux)
     - Document installing Composer
@@ -338,7 +312,7 @@ Each task builds incrementally on previous work, ensuring that core functionalit
     - Document running tests locally
     - _Requirements: 7.5_
   
-  - [x] 12.6 Create troubleshooting documentation
+  - [x] 12.5 Create troubleshooting documentation
     - Create `docs/troubleshooting.md` with common issues and solutions
     - Document PHP syntax errors and how to fix them
     - Document Azure authentication failures and credential rotation
@@ -346,26 +320,26 @@ Each task builds incrementally on previous work, ensuring that core functionalit
     - Document GitHub Actions workflow failures and debugging
     - Document Azure free tier quota exceeded errors
     - Document App Service name conflicts and resolution
-    - _Requirements: 7.6_
+    - _Requirements: 6.5_
   
-  - [x] 12.7 Create architecture documentation with diagrams
+  - [x] 12.6 Create architecture documentation with diagrams
     - Create `docs/architecture.md` with system architecture overview
     - Include high-level architecture diagram (can use Mermaid or image)
     - Document component interaction flow
     - Document CI/CD pipeline flow
-    - Document Terraform workflow with Atlantis
+    - Document Terraform workflow
     - Explain each component's role and responsibilities
-    - _Requirements: 7.7_
+    - _Requirements: 6.6_
   
-  - [x] 12.8 Create logging and monitoring documentation
+  - [x] 12.7 Create logging and monitoring documentation
     - Create `docs/logging.md` with log access instructions
     - Document accessing logs through Azure Portal (App Service → Logs)
     - Document accessing logs through Azure CLI: `az webapp log tail --name {app-name} --resource-group {rg-name}`
     - Document enabling different log types (application, web server, detailed errors)
     - Document log retention and storage options
-    - _Requirements: 10.4, 10.5_
+    - _Requirements: 8.4, 8.5_
   
-  - [x] 12.9 Create main README with quick start
+  - [x] 12.8 Create main README with quick start
     - Update `README.md` with project overview and features
     - Add quick start section with prerequisites
     - Add links to all documentation files
@@ -382,7 +356,7 @@ Each task builds incrementally on previous work, ensuring that core functionalit
     - Document verification steps after deployment
     - Document how to update the application
     - Include estimated time for each step
-    - _Requirements: 7.1, 7.2, 7.3, 7.4_
+    - _Requirements: 6.1, 6.2, 6.3_
   
   - [x] 13.2 Create infrastructure deployment instructions
     - Add section to deployment guide for Terraform deployment
@@ -401,7 +375,7 @@ Each task builds incrementally on previous work, ensuring that core functionalit
     - Document interpreting workflow results (success/failure)
     - Document troubleshooting failed workflows
     - Document manual workflow triggers (if configured)
-    - _Requirements: 5.5, 5.6, 8.3_
+    - _Requirements: 5.5, 5.6, 7.3_
 
 - [ ] 14. Final checkpoint - End-to-end validation
   - Review all documentation for completeness and accuracy

@@ -2,9 +2,9 @@
 
 ## Overview
 
-This design document describes the architecture and implementation approach for a PHP-based static portal showcasing a Post Graduate Course in Cloud Computing. The system uses Azure App Service (free tier) for hosting, GitHub Actions for CI/CD automation, Terraform for infrastructure as code, and Atlantis for Terraform workflow automation.
+This design document describes the architecture and implementation approach for a PHP-based static portal showcasing a Post Graduate Course in Cloud Computing. The system uses Azure App Service (free tier) for hosting, GitHub Actions for CI/CD automation, and Terraform for infrastructure as code.
 
-The portal serves static content through PHP templates without requiring a database, making it lightweight and suitable for the Azure free tier. The entire deployment pipeline is automated through GitHub Actions, with infrastructure changes managed through Atlantis-automated Terraform workflows.
+The portal serves static content through PHP templates without requiring a database, making it lightweight and suitable for the Azure free tier. The entire deployment pipeline is automated through GitHub Actions, with infrastructure changes managed through Terraform workflows.
 
 ## Architecture
 
@@ -28,9 +28,9 @@ The portal serves static content through PHP templates without requiring a datab
             │                 │               │
             │                 │               │
     ┌───────▼────────┐  ┌────▼─────┐  ┌─────▼──────┐
-    │  GitHub        │  │ Atlantis │  │  GitHub    │
-    │  Actions       │  │ (Terraform│  │  Actions   │
-    │  (Validation)  │  │  PR Auto) │  │  (Deploy)  │
+    │  GitHub        │  │ Terraform│  │  GitHub    │
+    │  Actions       │  │ Workflow │  │  Actions   │
+    │  (Validation)  │  │ (Infra)  │  │  (Deploy)  │
     └───────┬────────┘  └────┬─────┘  └─────┬──────┘
             │                │               │
             │                │               │
@@ -62,10 +62,10 @@ The portal serves static content through PHP templates without requiring a datab
    - Code is committed and pushed to GitHub public repository
    - GitHub Actions triggers automatically on push/PR
 
-2. **Infrastructure Flow (Terraform + Atlantis):**
-   - Pull request with Terraform changes triggers Atlantis
-   - Atlantis runs `terraform plan` and posts results as PR comment
-   - After approval and merge, Atlantis runs `terraform apply`
+2. **Infrastructure Flow (Terraform):**
+   - Pull request with Terraform changes triggers GitHub Actions workflow
+   - Terraform plan runs and results are displayed in workflow logs
+   - After approval and merge, Terraform apply runs via GitHub Actions
    - Azure resources are created/updated via Terraform
 
 3. **Application Deployment Flow:**
@@ -285,46 +285,7 @@ jobs:
 - `AZURE_CREDENTIALS`: Service principal credentials (JSON format)
 - `AZURE_APP_NAME`: Name of the Azure App Service
 
-### 4. Atlantis Configuration
-
-**Configuration File:** `atlantis.yaml`
-
-```yaml
-version: 3
-projects:
-  - name: azure-infrastructure
-    dir: terraform
-    workspace: default
-    terraform_version: v1.5.0
-    autoplan:
-      when_modified: ["*.tf", "*.tfvars"]
-      enabled: true
-    apply_requirements: ["approved", "mergeable"]
-    workflow: default
-```
-
-**Atlantis Setup Options:**
-
-1. **Self-Hosted (Local/VM):**
-   - Run Atlantis server on local machine or VM
-   - Configure webhook in GitHub repository
-   - Requires public URL (use ngrok for local testing)
-
-2. **Cloud-Hosted (Free Alternatives):**
-   - Use GitHub Actions with Terraform
-   - Use Terraform Cloud free tier
-   - Use Spacelift free tier (if available)
-
-**Atlantis Workflow:**
-1. Developer creates PR with Terraform changes
-2. Atlantis automatically runs `terraform plan`
-3. Plan results posted as PR comment
-4. Reviewer approves PR
-5. Developer comments `atlantis apply` or merges PR
-6. Atlantis runs `terraform apply`
-7. Infrastructure updated in Azure
-
-### 5. Authentication and Credentials
+### 4. Authentication and Credentials
 
 **Azure Service Principal:**
 - Created via Azure CLI: `az ad sp create-for-rbac`
@@ -343,7 +304,7 @@ projects:
 
 **Terraform Authentication:**
 - Uses service principal via environment variables
-- Set in Atlantis configuration or GitHub Actions
+- Set in GitHub Actions workflow
 
 ## Data Models
 
@@ -463,9 +424,9 @@ $contact_form = [
 
 ### Property 5: Required Documentation Sections Present
 
-*For all* required documentation sections (Azure setup, service principal creation, GitHub secrets configuration, Atlantis setup, local development, troubleshooting, architecture diagrams, log access via Portal, log access via CLI), the documentation should include that section with step-by-step instructions.
+*For all* required documentation sections (Azure setup, service principal creation, GitHub secrets configuration, local development, troubleshooting, architecture diagrams, log access via Portal, log access via CLI), the documentation should include that section with step-by-step instructions.
 
-**Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 10.4, 10.5**
+**Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 8.4, 8.5**
 
 ## Error Handling
 
@@ -553,32 +514,30 @@ error_reporting(E_ALL);
 - Failed workflows visible in GitHub Actions tab
 - Email notifications configurable per user
 
-### Atlantis Errors
-
-**Terraform Workflow Errors:**
+**Terraform Errors**
 
 1. **Plan Failures:**
    - Cause: Invalid Terraform syntax or configuration
-   - Detection: `terraform plan` command fails
-   - Action: Post error details as PR comment
+   - Detection: `terraform plan` command fails in GitHub Actions
+   - Action: Workflow fails with error details
    - Resolution: Fix Terraform configuration, push update
 
 2. **Apply Failures:**
    - Cause: Azure API errors, resource conflicts, permission issues
-   - Detection: `terraform apply` command fails
-   - Action: Post error details as PR comment, do not merge
+   - Detection: `terraform apply` command fails in GitHub Actions
+   - Action: Workflow fails, deployment blocked
    - Resolution: Investigate Azure error, fix configuration
 
 3. **State Lock Conflicts:**
    - Cause: Concurrent Terraform operations
    - Detection: Terraform state lock acquisition fails
-   - Action: Wait for lock release or force unlock (with caution)
-   - Resolution: Coordinate Terraform operations, avoid concurrent PRs
+   - Action: Workflow fails with lock error
+   - Resolution: Wait for other operation to complete, or force unlock if stuck
 
-**Atlantis Error Recovery:**
-- Failed plans can be re-run with `atlantis plan` comment
-- Failed applies require fixing the issue and re-running
+**Terraform Error Recovery:**
+- Failed plans/applies can be re-run by pushing new commits
 - State locks can be manually released if needed
+- Coordinate Terraform operations to avoid concurrent runs
 
 ## Testing Strategy
 
@@ -781,10 +740,9 @@ public function testConsistentNavigationAcrossPages($pagePath)
 3. **Infrastructure Workflow:**
    - Create Terraform changes in branch
    - Create pull request
-   - Verify Atlantis runs plan
-   - Review plan output
+   - Review Terraform plan in GitHub Actions logs
    - Approve and merge PR
-   - Verify Atlantis applies changes
+   - Verify Terraform apply runs successfully
    - Verify resources created in Azure
 
 **Integration Test Tools:**
