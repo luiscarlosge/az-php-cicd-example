@@ -9,20 +9,18 @@ on:
 
 # Required GitHub Secrets:
 # - AZURE_CREDENTIALS: Service principal credentials in JSON format
-#   {
-#     "clientId": "<client-id>",
-#     "clientSecret": "<client-secret>",
-#     "subscriptionId": "<subscription-id>",
-#     "tenantId": "<tenant-id>"
-#   }
-# - AZURE_APP_NAME: Name of the Azure App Service (e.g., "my-php-portal")
-#
-# To configure these secrets:
-# 1. Go to your GitHub repository
-# 2. Navigate to Settings > Secrets and variables > Actions
-# 3. Click "New repository secret"
-# 4. Add AZURE_CREDENTIALS with the service principal JSON
-# 5. Add AZURE_APP_NAME with your App Service name
+# - AZURE_APP_NAME: Name of the Azure App Service
+# - TERRAFORM_BACKEND_RESOURCE_GROUP: Resource group for Terraform state
+# - TERRAFORM_BACKEND_STORAGE_ACCOUNT: Storage account for Terraform state
+# - TERRAFORM_BACKEND_CONTAINER: Container name for Terraform state
+# - TERRAFORM_BACKEND_KEY: State file name (e.g., "terraform.tfstate")
+
+env:
+  TERRAFORM_VERSION: '1.5.0'
+  ARM_CLIENT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIALS).clientId }}
+  ARM_CLIENT_SECRET: ${{ fromJSON(secrets.AZURE_CREDENTIALS).clientSecret }}
+  ARM_SUBSCRIPTION_ID: ${{ fromJSON(secrets.AZURE_CREDENTIALS).subscriptionId }}
+  ARM_TENANT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIALS).tenantId }}
 
 jobs:
   # Validation job - runs on all branches
@@ -30,21 +28,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
       
-      # Setup PHP 8.0 environment
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
       
-      # Validate PHP syntax for all PHP files
       - name: Validate PHP syntax
         run: find public includes -name "*.php" -exec php -l {} \;
       
-      # Run PHPUnit tests if they exist
       - name: Run PHPUnit tests
         run: |
           if [ -f "vendor/bin/phpunit" ]; then
@@ -53,41 +47,99 @@ jobs:
             echo "PHPUnit not installed, skipping tests"
           fi
   
-  # Deployment job - only runs on main branch after validation succeeds
-  deploy:
+  # Terraform infrastructure deployment - only on main branch
+  terraform:
     needs: validate
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     
+    outputs:
+      app_service_name: ${{ steps.terraform_output.outputs.app_service_name }}
+      app_service_url: ${{ steps.terraform_output.outputs.app_service_url }}
+    
     steps:
-      # Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
       
-      # Login to Azure using service principal credentials
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+      
       - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-      # Deploy application to Azure App Service
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.TERRAFORM_BACKEND_RESOURCE_GROUP }}" \
+            -backend-config="storage_account_name=${{ secrets.TERRAFORM_BACKEND_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=${{ secrets.TERRAFORM_BACKEND_CONTAINER }}" \
+            -backend-config="key=${{ secrets.TERRAFORM_BACKEND_KEY }}"
+      
+      - name: Terraform Format Check
+        working-directory: ./terraform
+        run: terraform fmt -check -recursive
+      
+      - name: Terraform Validate
+        working-directory: ./terraform
+        run: terraform validate
+      
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: terraform plan -out=tfplan
+      
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve tfplan
+      
+      - name: Get Terraform Outputs
+        id: terraform_output
+        working-directory: ./terraform
+        run: |
+          APP_NAME=$(terraform output -raw app_service_name)
+          APP_URL=$(terraform output -raw app_service_url)
+          echo "app_service_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "app_service_url=$APP_URL" >> $GITHUB_OUTPUT
+          echo "App Service Name: $APP_NAME"
+          echo "App Service URL: $APP_URL"
+  
+  # Application deployment - only after Terraform succeeds
+  deploy:
+    needs: terraform
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.AZURE_APP_NAME }}
+          app-name: ${{ needs.terraform.outputs.app_service_name }}
           package: .
       
-      # Verify deployment with HTTP health check
       - name: Verify deployment
         run: |
           echo "Waiting for deployment to complete..."
           sleep 30
-          APP_URL="https://${{ secrets.AZURE_APP_NAME }}.azurewebsites.net"
+          APP_URL="${{ needs.terraform.outputs.app_service_url }}"
           echo "Checking application at: $APP_URL"
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL")
           if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 301 ] || [ "$HTTP_STATUS" -eq 302 ]; then
-            echo "Deployment successful! Application is accessible (HTTP $HTTP_STATUS)"
+            echo "✅ Deployment successful! Application is accessible (HTTP $HTTP_STATUS)"
+            echo "🌐 Application URL: $APP_URL"
           else
-            echo "Deployment verification failed! HTTP status: $HTTP_STATUS"
+            echo "❌ Deployment verification failed! HTTP status: $HTTP_STATUS"
             exit 1
           fi
