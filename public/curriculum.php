@@ -1,7 +1,7 @@
 <?php
 /**
  * Curriculum Page
- * Displays course modules, topics, and credits
+ * Displays course modules and topics
  */
 
 // Include configuration
@@ -34,7 +34,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <article class="module-card">
                     <div class="module-header">
                         <h3><?php echo t('curriculum.module'); ?> 1: <?php echo t('curriculum.cloud_fundamentals'); ?></h3>
-                        <span class="module-credits">6 <?php echo t('curriculum.credits'); ?></span>
                     </div>
                     <div class="module-content">
                         <h4><?php echo t('curriculum.topics'); ?>:</h4>
@@ -50,7 +49,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <article class="module-card">
                     <div class="module-header">
                         <h3><?php echo t('curriculum.module'); ?> 2: <?php echo t('curriculum.cloud_architecture'); ?></h3>
-                        <span class="module-credits">6 <?php echo t('curriculum.credits'); ?></span>
                     </div>
                     <div class="module-content">
                         <h4><?php echo t('curriculum.topics'); ?>:</h4>
@@ -66,7 +64,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <article class="module-card">
                     <div class="module-header">
                         <h3><?php echo t('curriculum.module'); ?> 3: <?php echo t('curriculum.devops_cicd'); ?></h3>
-                        <span class="module-credits">6 <?php echo t('curriculum.credits'); ?></span>
                     </div>
                     <div class="module-content">
                         <h4><?php echo t('curriculum.topics'); ?>:</h4>
@@ -82,7 +79,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <article class="module-card">
                     <div class="module-header">
                         <h3><?php echo t('curriculum.module'); ?> 4: <?php echo t('curriculum.cloud_platforms'); ?></h3>
-                        <span class="module-credits">8 <?php echo t('curriculum.credits'); ?></span>
                     </div>
                     <div class="module-content">
                         <h4><?php echo t('curriculum.topics'); ?>:</h4>
@@ -98,7 +94,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <article class="module-card">
                     <div class="module-header">
                         <h3><?php echo t('curriculum.module'); ?> 5: <?php echo t('curriculum.cloud_security'); ?></h3>
-                        <span class="module-credits">6 <?php echo t('curriculum.credits'); ?></span>
                     </div>
                     <div class="module-content">
                         <h4><?php echo t('curriculum.topics'); ?>:</h4>
@@ -114,7 +109,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <article class="module-card">
                     <div class="module-header">
                         <h3><?php echo t('curriculum.module'); ?> 6: <?php echo t('curriculum.capstone_project'); ?></h3>
-                        <span class="module-credits">8 <?php echo t('curriculum.credits'); ?></span>
                     </div>
                     <div class="module-content">
                         <h4><?php echo t('curriculum.topics'); ?>:</h4>
@@ -137,10 +131,6 @@ require_once __DIR__ . '/../includes/navigation.php';
                 <div class="summary-card">
                     <h3>Total Modules</h3>
                     <p class="summary-value">6</p>
-                </div>
-                <div class="summary-card">
-                    <h3>Total Credits</h3>
-                    <p class="summary-value">40</p>
                 </div>
                 <div class="summary-card">
                     <h3><?php echo t('course.duration_label'); ?></h3>
