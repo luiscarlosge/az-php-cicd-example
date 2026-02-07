@@ -1110,13 +1110,13 @@ section {
 
 /* LinkedIn Styles */
 .social-link.linkedin {
-    border-color: #0077b5;
+    border-color: #722F37;
 }
 
 .social-link.linkedin:hover {
-    background-color: #0077b5;
+    background-color: #722F37;
     color: var(--color-text-inverse);
-    border-color: #0077b5;
+    border-color: #722F37;
 }
 
 /* GitHub Styles */
