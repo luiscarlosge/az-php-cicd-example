@@ -7,12 +7,12 @@
 :root {
     /* ============================================
        PRIMARY COLORS
-       Deep blue palette inspired by institutional branding
+       Wine red (vinotinto) palette
        ============================================ */
-    --color-primary: #003366;           /* Deep blue - main brand color */
-    --color-primary-light: #0066cc;     /* Lighter blue for hover states */
-    --color-primary-dark: #002244;      /* Darker blue for emphasis */
-    --color-primary-rgb: 0, 51, 102;    /* RGB values for transparency */
+    --color-primary: #722F37;           /* Wine red - main brand color */
+    --color-primary-light: #8B1538;     /* Lighter wine red for hover states */
+    --color-primary-dark: #4A0E0E;      /* Darker wine red for emphasis */
+    --color-primary-rgb: 114, 47, 55;   /* RGB values for transparency */
     
     /* ============================================
        SECONDARY COLORS
