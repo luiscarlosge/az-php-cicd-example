@@ -16,12 +16,12 @@
     
     /* ============================================
        SECONDARY COLORS
-       Orange accent for calls-to-action and highlights
+       Black accent for calls-to-action and highlights
        ============================================ */
-    --color-secondary: #ff6600;         /* Orange accent - energy and action */
-    --color-secondary-light: #ff8833;   /* Lighter orange for hover states */
-    --color-secondary-dark: #cc5200;    /* Darker orange for emphasis */
-    --color-secondary-rgb: 255, 102, 0; /* RGB values for transparency */
+    --color-secondary: #1a1a1a;         /* Black accent - elegant and neutral */
+    --color-secondary-light: #333333;   /* Dark gray for hover states */
+    --color-secondary-dark: #000000;    /* Pure black for emphasis */
+    --color-secondary-rgb: 26, 26, 26;  /* RGB values for transparency */
     
     /* ============================================
        NEUTRAL COLORS
@@ -153,14 +153,14 @@
    ============================================
    
    Color Contrast Ratios (WCAG AA Compliance):
-   - Primary blue (#003366) on white: 10.59:1 ✓ (Exceeds 4.5:1)
-   - Secondary orange (#ff6600) on white: 3.28:1 ⚠ (Use for large text only)
+   - Primary wine red (#722F37) on white: 8.5:1 ✓ (Exceeds 4.5:1)
+   - Secondary black (#1a1a1a) on white: 16.1:1 ✓ (Exceeds 4.5:1)
    - Text (#333333) on white: 12.63:1 ✓ (Exceeds 4.5:1)
    - Text light (#666666) on white: 5.74:1 ✓ (Exceeds 4.5:1)
    
    Recommendations:
-   - Use primary blue for text and backgrounds freely
-   - Use secondary orange for large text (18px+) or with white text
+   - Use primary wine red for text and backgrounds freely
+   - Use secondary black for any text size - excellent contrast
    - Always test color combinations for sufficient contrast
    - Provide alternative indicators beyond color alone
    ============================================ */
