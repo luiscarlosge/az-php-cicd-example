@@ -177,8 +177,8 @@ class ComponentTest extends TestCase
         $this->assertStringContainsString('All rights reserved', $output);
         
         // Verify contact email link
-        $this->assertStringContainsString('info@cloudcomputing.edu', $output);
-        $this->assertStringContainsString('mailto:info@cloudcomputing.edu', $output);
+        $this->assertStringContainsString('luis.galvis-e@escuelaing.edu.co', $output);
+        $this->assertStringContainsString('mailto:luis.galvis-e@escuelaing.edu.co', $output);
         
         // Verify contact section
         $this->assertStringContainsString('Contact Us', $output);
@@ -224,7 +224,7 @@ class ComponentTest extends TestCase
         
         // Verify expected values
         $this->assertEquals('Post Graduate Course in Cloud Computing', SITE_NAME);
-        $this->assertEquals('info@cloudcomputing.edu', CONTACT_EMAIL);
+        $this->assertEquals('luis.galvis-e@escuelaing.edu.co', CONTACT_EMAIL);
         $this->assertEquals('2 years', COURSE_DURATION);
         $this->assertEquals('September 2024', COURSE_START_DATE);
         $this->assertEquals('Full-time / Part-time', COURSE_MODE);

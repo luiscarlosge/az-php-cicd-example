@@ -193,7 +193,7 @@ class PageRenderTest extends TestCase
         
         // Verify contact information is displayed
         $this->assertStringContainsString('Contact Information', $output);
-        $this->assertStringContainsString('info@cloudcomputing.edu', $output);
+        $this->assertStringContainsString('luis.galvis-e@escuelaing.edu.co', $output);
         
         // Verify demo form note is present
         $this->assertStringContainsString('demonstration form', $output);

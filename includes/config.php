@@ -19,7 +19,7 @@ initLanguage();
 // Site Configuration
 define('SITE_NAME', 'Post Graduate Course in Cloud Computing');
 define('SITE_URL', 'https://your-app.azurewebsites.net');
-define('CONTACT_EMAIL', 'info@cloudcomputing.edu');
+define('CONTACT_EMAIL', 'luis.galvis-e@escuelaing.edu.co');
 
 // Course Information
 define('COURSE_DURATION', '2 years');
