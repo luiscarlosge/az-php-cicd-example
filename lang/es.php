@@ -59,18 +59,35 @@ return [
 
     // Faculty Information
     'faculty' => [
-        'title' => 'Nuestro Profesor',
-        'name' => 'Luis Carlos Galvis Espitia',
-        'position' => 'Profesor de Computación en la Nube',
-        'image_alt' => 'Foto de Luis Carlos Galvis Espitia',
+        'title' => 'Nuestros Profesores',
         'credentials_title' => 'Credenciales',
-        'credentials' => [
-            'Ingeniero de Sistemas de la Escuela Colombiana de Ingeniería',
-            'Magíster en Negocios y Tecnologías de la Información de la Universidad de los Andes',
-            'Certificación AWS Solution Architect Associate'
-        ],
         'specialization' => 'Especialización',
-        'specialization_text' => 'Arquitectura de Nube y Sistemas Distribuidos'
+        'members' => [
+            [
+                'name' => 'Luis Carlos Galvis Espitia',
+                'position' => 'Profesor de Computación en la Nube',
+                'image' => 'assets/images/faculty/placeholder.svg',
+                'image_alt' => 'Foto de Luis Carlos Galvis Espitia',
+                'credentials' => [
+                    'Ingeniero de Sistemas de la Escuela Colombiana de Ingeniería',
+                    'Magíster en Negocios y Tecnologías de la Información de la Universidad de los Andes',
+                    'Certificación AWS Solution Architect Associate'
+                ],
+                'specialization_text' => 'Arquitectura de Nube y Sistemas Distribuidos'
+            ],
+            [
+                'name' => 'Chato',
+                'position' => 'Asistente de IA',
+                'image' => 'assets/images/faculty/chato.jpg',
+                'image_alt' => 'Foto de Chato - Asistente de IA',
+                'credentials' => [
+                    'Modelo de Lenguaje Avanzado',
+                    'Experto en Automatización y DevOps',
+                    'Integración con APIs y Servicios en la Nube'
+                ],
+                'specialization_text' => 'Automatización, Integración de Sistemas y Asistencia Técnica'
+            ]
+        ]
     ],
 
     // Curriculum

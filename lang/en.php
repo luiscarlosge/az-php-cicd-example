@@ -60,17 +60,34 @@ return [
     // Faculty Information
     'faculty' => [
         'title' => 'Our Faculty',
-        'name' => 'Luis Carlos Galvis Espitia',
-        'position' => 'Cloud Computing Lecturer',
-        'image_alt' => 'Photo of Luis Carlos Galvis Espitia',
         'credentials_title' => 'Credentials',
-        'credentials' => [
-            'Bachelor Degree in Systems Engineering from Colombian School of Engineering',
-            'Master Degree in Business and Information Technology from University of the Andes',
-            'AWS Solution Architect Associate certification'
-        ],
         'specialization' => 'Specialization',
-        'specialization_text' => 'Cloud Architecture and Distributed Systems'
+        'members' => [
+            [
+                'name' => 'Luis Carlos Galvis Espitia',
+                'position' => 'Cloud Computing Lecturer',
+                'image' => 'assets/images/faculty/placeholder.svg',
+                'image_alt' => 'Photo of Luis Carlos Galvis Espitia',
+                'credentials' => [
+                    'Bachelor Degree in Systems Engineering from Colombian School of Engineering',
+                    'Master Degree in Business and Information Technology from University of the Andes',
+                    'AWS Solution Architect Associate certification'
+                ],
+                'specialization_text' => 'Cloud Architecture and Distributed Systems'
+            ],
+            [
+                'name' => 'Chato',
+                'position' => 'AI Assistant',
+                'image' => 'assets/images/faculty/chato.jpg',
+                'image_alt' => 'Photo of Chato - AI Assistant',
+                'credentials' => [
+                    'Advanced Language Model',
+                    'Expert in Automation and DevOps',
+                    'Cloud Services and API Integration'
+                ],
+                'specialization_text' => 'Automation, Systems Integration and Technical Assistance'
+            ]
+        ]
     ],
 
     // Curriculum
