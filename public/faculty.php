@@ -1,7 +1,7 @@
 <?php
 /**
  * Faculty Page
- * Displays single faculty member profile with credentials and specialization
+ * Displays faculty members with credentials and specialization
  */
 
 // Include configuration
@@ -25,19 +25,20 @@ require_once __DIR__ . '/../includes/navigation.php';
     <!-- Faculty Profile Section -->
     <section class="faculty-profile">
         <div class="container">
+            <?php foreach (t('faculty.members') as $member): ?>
             <article class="faculty-member">
                 <div class="faculty-photo">
-                    <img src="assets/images/faculty/placeholder.svg" 
-                         alt="<?php echo t('faculty.image_alt'); ?>">
+                    <img src="<?php echo htmlspecialchars($member['image']); ?>" 
+                         alt="<?php echo htmlspecialchars($member['image_alt']); ?>">
                 </div>
                 <div class="faculty-info">
-                    <h2><?php echo t('faculty.name'); ?></h2>
-                    <p class="faculty-position"><?php echo t('faculty.position'); ?></p>
+                    <h2><?php echo htmlspecialchars($member['name']); ?></h2>
+                    <p class="faculty-position"><?php echo htmlspecialchars($member['position']); ?></p>
                     
                     <div class="faculty-credentials">
                         <h3><?php echo t('faculty.credentials_title'); ?></h3>
                         <ul class="credentials-list">
-                            <?php foreach (t('faculty.credentials') as $credential): ?>
+                            <?php foreach ($member['credentials'] as $credential): ?>
                                 <li><?php echo htmlspecialchars($credential); ?></li>
                             <?php endforeach; ?>
                         </ul>
@@ -45,10 +46,11 @@ require_once __DIR__ . '/../includes/navigation.php';
                     
                     <div class="faculty-specialization">
                         <h3><?php echo t('faculty.specialization'); ?></h3>
-                        <p><?php echo t('faculty.specialization_text'); ?></p>
+                        <p><?php echo htmlspecialchars($member['specialization_text']); ?></p>
                     </div>
                 </div>
             </article>
+            <?php endforeach; ?>
         </div>
     </section>
 </main>
