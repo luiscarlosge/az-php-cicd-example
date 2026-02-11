@@ -2,6 +2,8 @@
 
 ## Portal Educativo PHP - Azure CI/CD
 
+![Architecture Diagram](architecture.png)
+
 ```mermaid
 flowchart LR
     subgraph Users["👥 Usuarios"]
