@@ -17,12 +17,11 @@
                 </div>
                 
                 <div class="footer-section">
-                    <h3>Follow Us</h3>
+                    <h3><?php echo t('social.follow_us'); ?></h3>
                     <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">Facebook</a>
-                        <a href="#" class="social-link" aria-label="Twitter">Twitter</a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">LinkedIn</a>
-                        <a href="#" class="social-link" aria-label="YouTube">YouTube</a>
+                        <a href="<?php echo t('social.linkedin_url'); ?>" class="social-link" aria-label="<?php echo t('social.linkedin'); ?>" target="_blank" rel="noopener noreferrer"><?php echo t('social.linkedin'); ?></a>
+                        <a href="<?php echo t('social.github_url'); ?>" class="social-link" aria-label="<?php echo t('social.github'); ?>" target="_blank" rel="noopener noreferrer"><?php echo t('social.github'); ?></a>
+                        <a href="<?php echo t('social.instagram_url'); ?>" class="social-link" aria-label="<?php echo t('social.instagram'); ?>" target="_blank" rel="noopener noreferrer"><?php echo t('social.instagram'); ?></a>
                     </div>
                 </div>
             </div>
