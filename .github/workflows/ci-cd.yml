@@ -1,0 +1,279 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+env:
+  TERRAFORM_VERSION: '1.5.0'
+  PHP_VERSION: '8.2'
+
+jobs:
+  # ============================================
+  # VALIDATION JOB - Runs on PR and Push
+  # ============================================
+  validation:
+    name: Code Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml
+          coverage: none
+
+      - name: Validate Composer
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Check PHP syntax
+        run: find includes public -name "*.php" -exec php -l {} \;
+
+      - name: Run PHPUnit tests
+        run: composer test
+
+      - name: Check for test failures
+        if: failure()
+        run: |
+          echo "❌ Validation failed! Tests must pass before proceeding."
+          exit 1
+
+  # ============================================
+  # TERRAFORM JOB - Runs on PR and Push
+  # ============================================
+  terraform:
+    name: Terraform Plan & Validation
+    runs-on: ubuntu-latest
+    needs: validation
+    if: always() && needs.validation.result == 'success'
+    
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+    
+    outputs:
+      app_service_name: ${{ steps.terraform_output.outputs.app_service_name }}
+      app_service_url: ${{ steps.terraform_output.outputs.app_service_url }}
+      terraform_changed: ${{ steps.terraform_plan.outputs.changed }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform Format Check
+        working-directory: ./terraform
+        run: |
+          terraform fmt -check -recursive
+          if [ $? -ne 0 ]; then
+            echo "❌ Terraform files are not properly formatted!"
+            echo "Run 'terraform fmt -recursive' to fix formatting."
+            exit 1
+          fi
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.TERRAFORM_BACKEND_RESOURCE_GROUP }}" \
+            -backend-config="storage_account_name=${{ secrets.TERRAFORM_BACKEND_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=${{ secrets.TERRAFORM_BACKEND_CONTAINER }}" \
+            -backend-config="key=${{ secrets.TERRAFORM_BACKEND_KEY }}"
+
+      - name: Terraform Validate
+        working-directory: ./terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: terraform_plan
+        working-directory: ./terraform
+        run: |
+          terraform plan -out=tfplan -detailed-exitcode || export TF_EXIT=$?
+          
+          if [ ${TF_EXIT} -eq 0 ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "✅ No infrastructure changes detected"
+          elif [ ${TF_EXIT} -eq 2 ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "📝 Infrastructure changes detected"
+          else
+            echo "❌ Terraform plan failed!"
+            exit 1
+          fi
+
+      - name: Setup Infracost
+        if: github.event_name == 'pull_request'
+        uses: infracost/actions/setup@v3
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+
+      - name: Generate Infracost JSON
+        if: github.event_name == 'pull_request'
+        working-directory: ./terraform
+        run: |
+          infracost breakdown --path . \
+            --format json \
+            --out-file /tmp/infracost.json
+
+      - name: Post Infracost comment
+        if: github.event_name == 'pull_request'
+        uses: infracost/actions/comment@v1
+        with:
+          path: /tmp/infracost.json
+          behavior: update
+
+      - name: Get Terraform Outputs (if applying)
+        id: terraform_output
+        if: github.ref == 'refs/heads/main' && steps.terraform_plan.outputs.changed == 'true'
+        working-directory: ./terraform
+        run: |
+          # Get current outputs if they exist
+          APP_NAME=$(terraform output -raw app_service_name 2>/dev/null || echo "")
+          APP_URL=$(terraform output -raw app_service_url 2>/dev/null || echo "")
+          
+          if [ -n "$APP_NAME" ]; then
+            echo "app_service_name=$APP_NAME" >> $GITHUB_OUTPUT
+            echo "app_service_url=$APP_URL" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for Terraform failures
+        if: failure()
+        run: |
+          echo "❌ Terraform validation or planning failed!"
+          exit 1
+
+  # ============================================
+  # TERRAFORM APPLY - Only on merge to main
+  # ============================================
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    needs: terraform
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.terraform.outputs.terraform_changed == 'true'
+    
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+    
+    outputs:
+      app_service_name: ${{ steps.apply_output.outputs.app_service_name }}
+      app_service_url: ${{ steps.apply_output.outputs.app_service_url }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.TERRAFORM_BACKEND_RESOURCE_GROUP }}" \
+            -backend-config="storage_account_name=${{ secrets.TERRAFORM_BACKEND_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=${{ secrets.TERRAFORM_BACKEND_CONTAINER }}" \
+            -backend-config="key=${{ secrets.TERRAFORM_BACKEND_KEY }}"
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve
+
+      - name: Get Terraform Outputs
+        id: apply_output
+        working-directory: ./terraform
+        run: |
+          APP_NAME=$(terraform output -raw app_service_name)
+          APP_URL=$(terraform output -raw app_service_url)
+          echo "app_service_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "app_service_url=$APP_URL" >> $GITHUB_OUTPUT
+          echo "✅ Infrastructure deployed successfully"
+          echo "🌐 App Service: $APP_NAME"
+          echo "🔗 URL: $APP_URL"
+
+  # ============================================
+  # DEPLOY - Only on merge to main
+  # ============================================
+  deploy:
+    name: Deploy to Azure
+    runs-on: ubuntu-latest
+    needs: [terraform, terraform-apply]
+    if: |
+      always() && 
+      github.ref == 'refs/heads/main' && 
+      github.event_name == 'push' &&
+      (needs.terraform-apply.result == 'success' || needs.terraform-apply.result == 'skipped')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine App Service Name
+        id: app_name
+        run: |
+          if [ "${{ needs.terraform-apply.result }}" == "success" ]; then
+            echo "name=${{ needs.terraform-apply.outputs.app_service_name }}" >> $GITHUB_OUTPUT
+            echo "url=${{ needs.terraform-apply.outputs.app_service_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "name=${{ needs.terraform.outputs.app_service_name }}" >> $GITHUB_OUTPUT
+            echo "url=${{ needs.terraform.outputs.app_service_url }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ steps.app_name.outputs.name }}
+          package: .
+
+      - name: Verify Deployment
+        run: |
+          echo "⏳ Waiting for deployment to stabilize..."
+          sleep 30
+          
+          APP_URL="${{ steps.app_name.outputs.url }}"
+          echo "🔍 Checking application at: $APP_URL"
+          
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo "000")
+          
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 301 ] || [ "$HTTP_STATUS" -eq 302 ]; then
+            echo "✅ Deployment successful! Application is accessible (HTTP $HTTP_STATUS)"
+            echo "🌐 Application URL: $APP_URL"
+          else
+            echo "❌ Deployment verification failed! HTTP status: $HTTP_STATUS"
+            exit 1
+          fi
+
+      - name: Deployment Summary
+        if: success()
+        run: |
+          echo "## 🚀 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **App Service:** ${{ steps.app_name.outputs.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** ${{ steps.app_name.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Live" >> $GITHUB_STEP_SUMMARY

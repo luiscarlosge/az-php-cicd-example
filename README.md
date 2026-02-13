@@ -72,17 +72,16 @@ Before you begin, ensure you have:
 
 ```bash
 # Run all unit tests
-vendor/bin/phpunit
+composer test
 
-# Run specific test suite
+# Or directly with PHPUnit
 vendor/bin/phpunit tests/unit
 
-# Run with verbose output
-vendor/bin/phpunit --verbose
-
-# Run with code coverage (requires Xdebug)
-vendor/bin/phpunit --coverage-html coverage
+# Run with code coverage
+composer test-coverage
 ```
+
+📖 **[Testing Guide](docs/testing-guide.md)** - Complete guide for running tests locally
 
 ## Deployment to Azure
 
@@ -203,13 +202,13 @@ azure-php-cicd-portal/
 │   ├── backend.tf             # Remote state configuration
 │   └── terraform.tfvars.example  # Example variable values
 ├── .github/workflows/          # GitHub Actions workflows
-│   └── deploy.yml             # CI/CD pipeline configuration
+│   └── ci-cd.yml              # CI/CD pipeline with Infracost
 ├── tests/                      # Test files
-│   ├── unit/                  # PHP unit tests
-│   │   ├── PageRenderTest.php # Page rendering tests
-│   │   └── ComponentTest.php  # Component tests
-│   └── terraform/             # Terraform tests
-│       └── terraform_test.go  # Infrastructure tests
+│   └── unit/                  # PHP unit tests
+│       ├── ConfigTest.php             # Configuration tests
+│       ├── LanguageSystemTest.php     # Language management tests
+│       ├── PageStructureTest.php      # Page structure tests
+│       └── TranslationFilesTest.php   # Translation consistency tests
 ├── docs/                       # Documentation
 │   ├── azure-setup.md         # Azure account setup
 │   ├── service-principal.md   # Service principal creation
@@ -222,7 +221,9 @@ azure-php-cicd-portal/
 │   ├── terraform-backend-setup.md # Terraform backend configuration
 │   ├── architecture.md        # System architecture
 │   ├── troubleshooting.md     # Common issues
-│   └── logging.md             # Logging and monitoring
+│   ├── logging.md             # Logging and monitoring
+│   ├── testing-guide.md       # Unit testing guide
+│   └── ci-cd-pipeline.md      # CI/CD pipeline documentation
 ├── .kiro/specs/               # Project specifications
 │   └── azure-php-cicd-portal/
 │       ├── requirements.md    # Requirements document
@@ -266,25 +267,21 @@ azure-php-cicd-portal/
 
 ## CI/CD Pipeline
 
-The GitHub Actions workflow automatically:
+The GitHub Actions workflow provides a comprehensive CI/CD pipeline with validation, infrastructure management, and deployment:
 
-1. **Validation** (on all branches):
-   - Checks out code
-   - Sets up PHP 8.0
-   - Validates PHP syntax
-   - Runs PHPUnit tests
+### On Pull Request
+1. **Validation**: PHP syntax check + unit tests
+2. **Terraform**: Format check, validate, plan + Infracost cost analysis
+   - Pipeline stops if validation fails
 
-2. **Deployment** (on main branch only):
-   - Checks out code
-   - Authenticates with Azure
-   - Deploys to App Service
-   - Verifies deployment with health check
+### On Merge to Main
+1. **Validation**: PHP syntax check + unit tests
+2. **Terraform**: Format check, validate, plan + Infracost
+3. **Terraform Apply**: Apply infrastructure changes (if detected)
+4. **Deploy**: Deploy application to Azure App Service
+   - Pipeline stops if any step fails
 
-### Workflow Triggers
-
-- **Push to any branch**: Runs validation
-- **Pull request**: Runs validation
-- **Push to main**: Runs validation + deployment
+📖 **[CI/CD Pipeline Documentation](docs/ci-cd-pipeline.md)** - Complete pipeline guide with Infracost setup
 
 ## Cost Breakdown
 
