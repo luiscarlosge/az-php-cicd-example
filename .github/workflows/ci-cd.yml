@@ -104,12 +104,15 @@ jobs:
         id: terraform_plan
         working-directory: ./terraform
         run: |
-          terraform plan -out=tfplan -detailed-exitcode || export TF_EXIT=$?
+          set +e
+          terraform plan -out=tfplan -detailed-exitcode
+          TF_EXIT=$?
+          set -e
           
-          if [ ${TF_EXIT} -eq 0 ]; then
+          if [ "$TF_EXIT" -eq 0 ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "✅ No infrastructure changes detected"
-          elif [ ${TF_EXIT} -eq 2 ]; then
+          elif [ "$TF_EXIT" -eq 2 ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "📝 Infrastructure changes detected"
           else
@@ -138,18 +141,20 @@ jobs:
           path: /tmp/infracost.json
           behavior: update
 
-      - name: Get Terraform Outputs (if applying)
+      - name: Get Terraform Outputs
         id: terraform_output
-        if: github.ref == 'refs/heads/main' && steps.terraform_plan.outputs.changed == 'true'
         working-directory: ./terraform
         run: |
-          # Get current outputs if they exist
+          # Always try to get outputs from current state
           APP_NAME=$(terraform output -raw app_service_name 2>/dev/null || echo "")
           APP_URL=$(terraform output -raw app_service_url 2>/dev/null || echo "")
           
           if [ -n "$APP_NAME" ]; then
             echo "app_service_name=$APP_NAME" >> $GITHUB_OUTPUT
             echo "app_service_url=$APP_URL" >> $GITHUB_OUTPUT
+            echo "✅ Retrieved app service info: $APP_NAME"
+          else
+            echo "⚠️ No app service outputs found (infrastructure may not be deployed yet)"
           fi
 
       - name: Check for Terraform failures
@@ -223,6 +228,7 @@ jobs:
       always() && 
       github.ref == 'refs/heads/main' && 
       github.event_name == 'push' &&
+      needs.terraform.result == 'success' &&
       (needs.terraform-apply.result == 'success' || needs.terraform-apply.result == 'skipped')
     
     steps:
@@ -232,12 +238,20 @@ jobs:
       - name: Determine App Service Name
         id: app_name
         run: |
-          if [ "${{ needs.terraform-apply.result }}" == "success" ]; then
+          # Try to get from terraform-apply first, then fall back to terraform
+          if [ "${{ needs.terraform-apply.result }}" == "success" ] && [ -n "${{ needs.terraform-apply.outputs.app_service_name }}" ]; then
             echo "name=${{ needs.terraform-apply.outputs.app_service_name }}" >> $GITHUB_OUTPUT
             echo "url=${{ needs.terraform-apply.outputs.app_service_url }}" >> $GITHUB_OUTPUT
-          else
+            echo "✅ Using app service from terraform-apply"
+          elif [ -n "${{ needs.terraform.outputs.app_service_name }}" ]; then
             echo "name=${{ needs.terraform.outputs.app_service_name }}" >> $GITHUB_OUTPUT
             echo "url=${{ needs.terraform.outputs.app_service_url }}" >> $GITHUB_OUTPUT
+            echo "✅ Using app service from terraform"
+          else
+            echo "❌ No app service name found!"
+            echo "This usually means infrastructure hasn't been deployed yet."
+            echo "Please ensure Terraform has been applied at least once."
+            exit 1
           fi
 
       - name: Login to Azure

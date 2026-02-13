@@ -174,6 +174,29 @@ Project: terraform
 
 ## Pipeline Behavior
 
+### First-Time Deployment (Important!)
+
+**If infrastructure doesn't exist yet**, you have two options:
+
+**Option 1: Deploy via Pipeline (Recommended)**
+1. Push your code to main branch
+2. The pipeline will detect no infrastructure exists
+3. Terraform Apply will create all resources
+4. Deployment will proceed automatically
+
+**Option 2: Deploy Locally First**
+```bash
+cd terraform
+terraform init \
+  -backend-config="resource_group_name=YOUR_RG" \
+  -backend-config="storage_account_name=YOUR_STORAGE" \
+  -backend-config="container_name=YOUR_CONTAINER" \
+  -backend-config="key=terraform.tfstate"
+
+terraform apply
+```
+Then push to GitHub to trigger application deployment.
+
 ### On Pull Request
 
 1. ✅ Runs validation (syntax + tests)
@@ -224,6 +247,44 @@ After successful deployment, a summary is added to the workflow run:
 ```
 
 ## Troubleshooting
+
+### Common Issues
+
+#### Terraform Plan Exit Code Error
+
+**Symptom**: `[: -eq: unary operator expected` or `Terraform plan failed`
+
+**Cause**: Shell script error in exit code handling
+
+**Solution**: This has been fixed in the latest version. Pull the latest changes:
+```bash
+git pull origin main
+```
+
+#### App Service Name Not Found
+
+**Symptom**: `app-name is a required input` in deployment step
+
+**Cause**: Infrastructure hasn't been deployed yet, or outputs aren't being retrieved
+
+**Solution**: 
+1. Ensure infrastructure exists in Azure
+2. If first deployment, push to main to create infrastructure
+3. Check that Terraform outputs are defined in `terraform/outputs.tf`
+4. Verify the pipeline retrieved outputs in the Terraform stage logs
+
+#### Infrastructure Doesn't Exist
+
+**Symptom**: Deploy fails because no app service exists
+
+**Solution**: 
+1. Push to main branch (not PR) to trigger Terraform Apply
+2. Or deploy infrastructure manually first:
+   ```bash
+   cd terraform
+   terraform init
+   terraform apply
+   ```
 
 ### Validation Fails
 
