@@ -66,7 +66,7 @@ return [
             [
                 'name' => 'Luis Carlos Galvis Espitia',
                 'position' => 'Cloud Computing Lecturer',
-                'image' => 'assets/images/faculty/placeholder.svg',
+                'image' => 'assets/images/faculty/luis.jpg',
                 'image_alt' => 'Photo of Luis Carlos Galvis Espitia',
                 'credentials' => [
                     'Bachelor Degree in Systems Engineering from Colombian School of Engineering',

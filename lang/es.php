@@ -66,7 +66,7 @@ return [
             [
                 'name' => 'Luis Carlos Galvis Espitia',
                 'position' => 'Profesor de Computación en la Nube',
-                'image' => 'assets/images/faculty/placeholder.svg',
+                'image' => 'assets/images/faculty/luis.jpg',
                 'image_alt' => 'Foto de Luis Carlos Galvis Espitia',
                 'credentials' => [
                     'Ingeniero de Sistemas de la Escuela Colombiana de Ingeniería',
