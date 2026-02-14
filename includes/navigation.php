@@ -7,12 +7,12 @@
 // Get current page filename
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Define navigation menu items
+// Define navigation menu items with translation keys
 $nav_items = [
-    '/public/index.php' => 'Home',
-    '/public/curriculum.php' => 'Curriculum',
-    '/public/faculty.php' => 'Faculty',
-    '/public/contact.php' => 'Contact'
+    '/public/index.php' => t('nav.home'),
+    '/public/curriculum.php' => t('nav.curriculum'),
+    '/public/faculty.php' => t('nav.faculty'),
+    '/public/contact.php' => t('nav.contact')
 ];
 ?>
 <nav class="main-navigation">
