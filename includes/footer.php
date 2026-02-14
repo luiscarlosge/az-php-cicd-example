@@ -8,7 +8,7 @@
         <div class="footer-container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Contact Us</h3>
+                    <h3><?php echo t('contact.title'); ?></h3>
                     <p>
                         <a href="mailto:<?php echo CONTACT_EMAIL; ?>" class="footer-link">
                             <?php echo CONTACT_EMAIL; ?>
