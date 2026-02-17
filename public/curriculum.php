@@ -119,6 +119,21 @@ require_once __DIR__ . '/../includes/navigation.php';
                         </ul>
                     </div>
                 </article>
+
+                <!-- Module 7: Generative AI in the Cloud -->
+                <article class="module-card">
+                    <div class="module-header">
+                        <h3><?php echo t('curriculum.module'); ?> 7: <?php echo t('curriculum.genai_cloud'); ?></h3>
+                    </div>
+                    <div class="module-content">
+                        <h4><?php echo t('curriculum.topics'); ?>:</h4>
+                        <ul class="topics-list">
+                            <?php foreach (t('curriculum.genai_cloud_topics') as $topic): ?>
+                                <li><?php echo htmlspecialchars($topic); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -130,7 +145,7 @@ require_once __DIR__ . '/../includes/navigation.php';
             <div class="summary-grid">
                 <div class="summary-card">
                     <h3>Total Modules</h3>
-                    <p class="summary-value">6</p>
+                    <p class="summary-value">7</p>
                 </div>
                 <div class="summary-card">
                     <h3><?php echo t('course.duration_label'); ?></h3>

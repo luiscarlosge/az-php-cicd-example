@@ -143,6 +143,14 @@ return [
             'Planificación y Gestión de Proyectos',
             'Documentación Técnica',
             'Presentación y Defensa'
+        ],
+        'genai_cloud' => 'IA Generativa en la Nube',
+        'genai_cloud_topics' => [
+            'Fundamentos de IA Generativa y LLMs',
+            'Servicios de IA en la Nube (Azure OpenAI, AWS Bedrock, Google Vertex AI)',
+            'Prompt Engineering y RAG',
+            'Despliegue de Modelos de IA en la Nube',
+            'Ética y Gobernanza de IA'
         ]
     ],
 

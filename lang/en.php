@@ -143,6 +143,14 @@ return [
             'Project Planning and Management',
             'Technical Documentation',
             'Presentation and Defense'
+        ],
+        'genai_cloud' => 'Generative AI in the Cloud',
+        'genai_cloud_topics' => [
+            'Generative AI and LLMs Fundamentals',
+            'Cloud AI Services (Azure OpenAI, AWS Bedrock, Google Vertex AI)',
+            'Prompt Engineering and RAG',
+            'Deploying AI Models in the Cloud',
+            'AI Ethics and Governance'
         ]
     ],
 
