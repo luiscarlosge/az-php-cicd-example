@@ -23,6 +23,52 @@ require_once __DIR__ . '/../includes/navigation.php';
         </div>
     </section>
 
+    <!-- Executive Summary Section -->
+    <section class="executive-summary">
+        <div class="container">
+            <h2><?php echo t('executive.title'); ?></h2>
+            <div class="summary-content">
+                <p class="summary-intro"><?php echo t('executive.intro'); ?></p>
+                
+                <div class="market-stats">
+                    <div class="stat-card">
+                        <span class="stat-number"><?php echo t('executive.stat1_number'); ?></span>
+                        <span class="stat-label"><?php echo t('executive.stat1_label'); ?></span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number"><?php echo t('executive.stat2_number'); ?></span>
+                        <span class="stat-label"><?php echo t('executive.stat2_label'); ?></span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number"><?php echo t('executive.stat3_number'); ?></span>
+                        <span class="stat-label"><?php echo t('executive.stat3_label'); ?></span>
+                    </div>
+                </div>
+
+                <div class="reasons-grid">
+                    <article class="reason-card">
+                        <h3>💼 <?php echo t('executive.reason1_title'); ?></h3>
+                        <p><?php echo t('executive.reason1_desc'); ?></p>
+                    </article>
+                    <article class="reason-card">
+                        <h3>📈 <?php echo t('executive.reason2_title'); ?></h3>
+                        <p><?php echo t('executive.reason2_desc'); ?></p>
+                    </article>
+                    <article class="reason-card">
+                        <h3>🤖 <?php echo t('executive.reason3_title'); ?></h3>
+                        <p><?php echo t('executive.reason3_desc'); ?></p>
+                    </article>
+                    <article class="reason-card">
+                        <h3>🌎 <?php echo t('executive.reason4_title'); ?></h3>
+                        <p><?php echo t('executive.reason4_desc'); ?></p>
+                    </article>
+                </div>
+
+                <p class="summary-conclusion"><?php echo t('executive.conclusion'); ?></p>
+            </div>
+        </div>
+    </section>
+
     <!-- Course Overview Section -->
     <section class="course-overview">
         <div class="container">

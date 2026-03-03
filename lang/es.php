@@ -21,6 +21,27 @@ return [
         'hero_subtitle' => 'Transforme su carrera con habilidades avanzadas en computación en la nube'
     ],
 
+    // Executive Summary
+    'executive' => [
+        'title' => '¿Por Qué Este Curso Ahora?',
+        'intro' => 'La computación en la nube ya no es el futuro — es el presente. Las empresas de todos los sectores están migrando masivamente a la nube, y la demanda de profesionales capacitados supera ampliamente la oferta disponible.',
+        'stat1_number' => '94%',
+        'stat1_label' => 'de empresas usan servicios cloud',
+        'stat2_number' => '+40%',
+        'stat2_label' => 'crecimiento anual en demanda de roles cloud',
+        'stat3_number' => '3.5M',
+        'stat3_label' => 'empleos cloud sin cubrir globalmente',
+        'reason1_title' => 'Brecha de Talento Crítica',
+        'reason1_desc' => 'Colombia y Latinoamérica enfrentan una escasez severa de arquitectos e ingenieros cloud. Las empresas compiten agresivamente por profesionales certificados, ofreciendo salarios premium y beneficios competitivos.',
+        'reason2_title' => 'Transformación Digital Acelerada',
+        'reason2_desc' => 'Post-pandemia, la adopción cloud se aceleró 7 años en 12 meses. Sectores como banca, salud, retail y gobierno están en plena transformación, creando oportunidades sin precedentes.',
+        'reason3_title' => 'IA Generativa Requiere Cloud',
+        'reason3_desc' => 'La explosión de ChatGPT, Copilot y herramientas de IA generativa depende de infraestructura cloud. Los profesionales que dominen ambas áreas serán los más valorados del mercado.',
+        'reason4_title' => 'Trabajo Remoto Global',
+        'reason4_desc' => 'Las habilidades cloud te abren puertas a empresas globales que contratan remotamente. Tu ubicación geográfica ya no limita tus oportunidades profesionales.',
+        'conclusion' => 'Este curso te prepara no solo con conocimientos técnicos, sino con habilidades prácticas validadas por certificaciones reconocidas mundialmente. Invierte en tu futuro profesional ahora.'
+    ],
+
     // Course Information
     'course' => [
         'title' => 'Paradigmas Emergentes en Computación en la Nube',
