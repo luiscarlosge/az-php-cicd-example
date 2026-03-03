@@ -21,6 +21,27 @@ return [
         'hero_subtitle' => 'Transform Your Career with Advanced Cloud Computing Skills'
     ],
 
+    // Executive Summary
+    'executive' => [
+        'title' => 'Why This Course Now?',
+        'intro' => 'Cloud computing is no longer the future — it\'s the present. Companies across all industries are massively migrating to the cloud, and the demand for skilled professionals far exceeds the available supply.',
+        'stat1_number' => '94%',
+        'stat1_label' => 'of enterprises use cloud services',
+        'stat2_number' => '+40%',
+        'stat2_label' => 'annual growth in cloud role demand',
+        'stat3_number' => '3.5M',
+        'stat3_label' => 'unfilled cloud jobs globally',
+        'reason1_title' => 'Critical Talent Gap',
+        'reason1_desc' => 'Colombia and Latin America face a severe shortage of cloud architects and engineers. Companies aggressively compete for certified professionals, offering premium salaries and competitive benefits.',
+        'reason2_title' => 'Accelerated Digital Transformation',
+        'reason2_desc' => 'Post-pandemic, cloud adoption accelerated 7 years in 12 months. Sectors like banking, healthcare, retail, and government are in full transformation, creating unprecedented opportunities.',
+        'reason3_title' => 'Generative AI Requires Cloud',
+        'reason3_desc' => 'The explosion of ChatGPT, Copilot, and generative AI tools depends on cloud infrastructure. Professionals who master both areas will be the most valued in the market.',
+        'reason4_title' => 'Global Remote Work',
+        'reason4_desc' => 'Cloud skills open doors to global companies hiring remotely. Your geographic location no longer limits your professional opportunities.',
+        'conclusion' => 'This course prepares you not only with technical knowledge but with practical skills validated by globally recognized certifications. Invest in your professional future now.'
+    ],
+
     // Course Information
     'course' => [
         'title' => 'Emerging Paradigms on Cloud Computing',
