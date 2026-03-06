@@ -49,12 +49,12 @@ function getCurrentLanguage(): string {
  * Set the language preference
  * Validates and sets language in session
  * 
- * @param string $lang Language code ('es' or 'en')
+ * @param string $lang Language code ('es', 'en', or 'pt')
  * @return bool True if language was set successfully, false otherwise
  */
 function setLanguage(string $lang): bool {
     // Validate language code
-    if (!in_array($lang, ['es', 'en'])) {
+    if (!in_array($lang, ['es', 'en', 'pt'])) {
         error_log("Invalid language code attempted: {$lang}");
         return false;
     }

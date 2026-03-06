@@ -39,12 +39,12 @@ function processLanguageSwitch(string $method, array $postData): array
         ];
     }
 
-    // Validate that language is either 'es' or 'en'
-    if (!in_array($lang, ['es', 'en'])) {
+    // Validate that language is 'es', 'en', or 'pt'
+    if (!in_array($lang, ['es', 'en', 'pt'])) {
         return [
             'status_code' => 400,
             'success' => false,
-            'error' => 'Invalid language code. Must be "es" or "en".'
+            'error' => 'Invalid language code. Must be "es", "en", or "pt".'
         ];
     }
 
