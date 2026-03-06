@@ -38,6 +38,12 @@ require_once __DIR__ . '/config.php';
                         <?php echo getCurrentLanguage() === 'en' ? 'aria-current="true"' : ''; ?>>
                     EN
                 </button>
+                <button class="lang-btn <?php echo getCurrentLanguage() === 'pt' ? 'active' : ''; ?>" 
+                        data-lang="pt" 
+                        aria-label="Switch to Portuguese"
+                        <?php echo getCurrentLanguage() === 'pt' ? 'aria-current="true"' : ''; ?>>
+                    PT
+                </button>
             </div>
         </div>
     </header>
